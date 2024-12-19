@@ -12,7 +12,8 @@ const registerUserIntoDB = async (payload: TLoginUser) => {
     throw new ApiError('User already exists', httpStatus.BAD_REQUEST)
   }
   const createedUser = await User.create(payload)
-  const result = await User.findById(createedUser._id).select('name email')
+  const {_id} = createedUser
+  const result = await User.findById(_id).select('name email')
   return result
 }
 

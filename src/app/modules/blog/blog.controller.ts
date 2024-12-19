@@ -15,6 +15,20 @@ const createBlog = asyncWrapper(async (req, res) => {
     })
 })
 
+//update blog
+const updateBlog = asyncWrapper(async (req, res) => {
+    const {id} = req.params
+    const blog = req.body
+    const result = await blogServices.updateBlogIntoDB(id, blog)
+    sendResponse(res, {
+        success: true,
+        message: 'Blog updated successfully',
+        statusCode: httpStatus.OK,
+        data: result,
+    })
+})
+
 export const blogControllers = {
-    createBlog
+    createBlog,
+    updateBlog
 }
