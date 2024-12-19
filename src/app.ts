@@ -4,6 +4,7 @@ const app:Application = express()
 import httpStatus from 'http-status'
 import globalErrorHandler from './app/middlewares/globalErrorHandler'
 import router from './app/routes'
+import notFoundError from './app/middlewares/notFoundError'
 
 app.use(express.json())
 app.use(cors())
@@ -17,5 +18,6 @@ app.get('/', (req:Request, res: Response) => {
 })
 
 app.use(globalErrorHandler)
+app.use(notFoundError)
 
 export default app
