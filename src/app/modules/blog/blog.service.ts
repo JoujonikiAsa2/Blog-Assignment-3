@@ -3,21 +3,21 @@ import ApiError from '../../errors/ApiError'
 import { TBlog } from './blog.interface'
 import { Blog } from './blog.model'
 import QueryBuilder from '../../builder/queryBuilder'
-import { searchableFieldsForBlog } from './blog.constant'
+import { searchableFieldsForBlog, selectedFileld } from './blog.constant'
 
 const createBlogIntoDB = async (payload: TBlog) => {
   const createdBlog = await Blog.create(payload)
   const { _id } = createdBlog
   const result = await Blog.findById(_id)
     .populate('author')
-    .select('title content author')
+    .select(selectedFileld)
   return result
 }
 
 //ger all blogs
 const findAllBlogsFromDB = async (query: Record<string, unknown>) => {
   const blogQuery = new QueryBuilder(
-    Blog.find().populate('author').select('title content author'),
+    Blog.find().populate('author').select(selectedFileld),
     query,
   ).search(searchableFieldsForBlog)
   const result = blogQuery.modelQuery
@@ -35,7 +35,7 @@ const updateBlogIntoDB = async (id: string, payload: TBlog) => {
   //update blog
   const result = await Blog.findByIdAndUpdate(id, payload, { new: true })
     .populate('author')
-    .select('title content author')
+    .select(selectedFileld)
   return result
 }
 

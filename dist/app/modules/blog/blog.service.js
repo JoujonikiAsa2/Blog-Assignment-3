@@ -23,12 +23,12 @@ const createBlogIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function
     const { _id } = createdBlog;
     const result = yield blog_model_1.Blog.findById(_id)
         .populate('author')
-        .select('title content author');
+        .select(blog_constant_1.selectedFileld);
     return result;
 });
 //ger all blogs
 const findAllBlogsFromDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
-    const blogQuery = new queryBuilder_1.default(blog_model_1.Blog.find().populate('author').select('title content author'), query).search(blog_constant_1.searchableFieldsForBlog);
+    const blogQuery = new queryBuilder_1.default(blog_model_1.Blog.find().populate('author').select(blog_constant_1.selectedFileld), query).search(blog_constant_1.searchableFieldsForBlog);
     const result = blogQuery.modelQuery;
     return result;
 });
@@ -42,7 +42,7 @@ const updateBlogIntoDB = (id, payload) => __awaiter(void 0, void 0, void 0, func
     //update blog
     const result = yield blog_model_1.Blog.findByIdAndUpdate(id, payload, { new: true })
         .populate('author')
-        .select('title content author');
+        .select(blog_constant_1.selectedFileld);
     return result;
 });
 //delete blog
