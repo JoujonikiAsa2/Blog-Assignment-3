@@ -1,13 +1,12 @@
-import { NextFunction } from "express";
-import { AnyZodObject } from "zod"
+import { AnyZodObject } from 'zod'
+import asyncWrapper from '../utils/asyncWrapper'
 
 const validateRequest = (schema: AnyZodObject) => {
-    return async(req: Request, res: Response, next: NextFunction) => {
-        Promise.resolve(
-            await schema.safeParseAsync({
-                body: req.body,
-            })
-        ).catch((error) => next(error));
-      };
+  return asyncWrapper(async (req, res, next) => {
+    await schema.parseAsync({
+      body: req.body,
+    })
+    next()
+  })
 }
 export default validateRequest
