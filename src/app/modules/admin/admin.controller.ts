@@ -12,6 +12,18 @@ const blockUser = asyncWrapper(async (req, res) => {
   })
 })
 
+//delete blog
+const deleteBlog = asyncWrapper(async (req, res) => {
+  const { id } = req.params
+  adminServices.deleteBlog(id)
+  res.status(httpStatus.OK).json({
+    success: true,
+    message: 'Blog deleted successfully',
+    statusCode: httpStatus.OK,
+  })
+})
+
 export const adminControllers = {
   blockUser,
+  deleteBlog,
 }

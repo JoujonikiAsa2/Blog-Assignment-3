@@ -25,6 +25,17 @@ const blockUser = (0, asyncWrapper_1.default)((req, res) => __awaiter(void 0, vo
         statusCode: http_status_1.default.OK,
     });
 }));
+//delete blog
+const deleteBlog = (0, asyncWrapper_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    admin_service_1.adminServices.deleteBlog(id);
+    res.status(http_status_1.default.OK).json({
+        success: true,
+        message: 'Blog deleted successfully',
+        statusCode: http_status_1.default.OK,
+    });
+}));
 exports.adminControllers = {
     blockUser,
+    deleteBlog,
 };
