@@ -28,7 +28,7 @@ const auth = (...userRole: TUserRole[]) =>
     }
 
     //check user is blocked
-    const blockedUser = await User.findOne({ isBlocked: true })
+    const blockedUser = await User.findOne({_id: id, isBlocked: true })
     if (blockedUser) {
       throw new ApiError('Forbidden access', httpStatus.UNAUTHORIZED)
     }

@@ -33,7 +33,7 @@ const auth = (...userRole) => (0, asyncWrapper_1.default)((req, res, next) => __
         throw new ApiError_1.default('Forbidden access', http_status_1.default.UNAUTHORIZED);
     }
     //check user is blocked
-    const blockedUser = yield user_model_1.User.findOne({ isBlocked: true });
+    const blockedUser = yield user_model_1.User.findOne({ _id: id, isBlocked: true });
     if (blockedUser) {
         throw new ApiError_1.default('Forbidden access', http_status_1.default.UNAUTHORIZED);
     }
