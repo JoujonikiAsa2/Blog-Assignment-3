@@ -52,6 +52,12 @@ const blogSchema = new mongoose_1.default.Schema({
         type: Boolean,
         default: true,
     },
+    createdAt: {
+        type: Date,
+    },
+    updatedAt: {
+        type: Date,
+    },
 }, {
     timestamps: true,
 });
