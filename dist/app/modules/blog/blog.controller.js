@@ -28,6 +28,17 @@ const createBlog = (0, asyncWrapper_1.default)((req, res) => __awaiter(void 0, v
         data: result,
     });
 }));
+//find all blogs
+const findAllBlogs = (0, asyncWrapper_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const search = req.query;
+    const result = yield blog_service_1.blogServices.findAllBlogsFromDB(search);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        message: 'Blogs fetched successfully',
+        statusCode: http_status_1.default.OK,
+        data: result,
+    });
+}));
 //update blog
 const updateBlog = (0, asyncWrapper_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
@@ -52,5 +63,6 @@ const deleteBlog = (0, asyncWrapper_1.default)((req, res) => __awaiter(void 0, v
 exports.blogControllers = {
     createBlog,
     updateBlog,
-    deleteBlog
+    deleteBlog,
+    findAllBlogs
 };

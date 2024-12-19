@@ -16,12 +16,20 @@ exports.blogServices = void 0;
 const http_status_1 = __importDefault(require("http-status"));
 const ApiError_1 = __importDefault(require("../../errors/ApiError"));
 const blog_model_1 = require("./blog.model");
+const queryBuilder_1 = __importDefault(require("../../builder/queryBuilder"));
+const blog_constant_1 = require("./blog.constant");
 const createBlogIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const createdBlog = yield blog_model_1.Blog.create(payload);
     const { _id } = createdBlog;
     const result = yield blog_model_1.Blog.findById(_id)
         .populate('author')
         .select('title content author');
+    return result;
+});
+//ger all blogs
+const findAllBlogsFromDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
+    const blogQuery = new queryBuilder_1.default(blog_model_1.Blog.find().populate('author').select('title content author'), query).search(blog_constant_1.searchableFieldsForBlog);
+    const result = blogQuery.modelQuery;
     return result;
 });
 //update blog
@@ -49,5 +57,6 @@ const deleteBlogFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () 
 exports.blogServices = {
     createBlogIntoDB,
     updateBlogIntoDB,
-    deleteBlogFromDB
+    deleteBlogFromDB,
+    findAllBlogsFromDB,
 };

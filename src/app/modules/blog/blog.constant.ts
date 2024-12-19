@@ -1,0 +1,1 @@
+export const searchableFieldsForBlog = ['title', 'content']

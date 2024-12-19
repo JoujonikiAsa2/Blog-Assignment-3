@@ -18,7 +18,6 @@ const createBlog = asyncWrapper(async (req, res) => {
 //find all blogs
 const findAllBlogs = asyncWrapper(async (req, res) => {
     const search = req.query
-    console.log(search)
   const result = await blogServices.findAllBlogsFromDB(search)
   sendResponse(res, {
     success: true,
