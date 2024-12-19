@@ -46,7 +46,7 @@ const userSchema = new mongoose.Schema(
 )
 
 userSchema.statics.isUserAlreadyExists = async function(email:string){
-    const user = await User.findOne({email})
+    const user = await User.findOne({email}).select('-password')
     return user
 }
 

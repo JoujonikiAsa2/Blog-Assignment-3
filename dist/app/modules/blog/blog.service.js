@@ -22,16 +22,19 @@ const createBlogIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function
     const createdBlog = yield blog_model_1.Blog.create(payload);
     const { _id } = createdBlog;
     const result = yield blog_model_1.Blog.findById(_id)
-        .populate('author')
+        .populate('author', 'name email')
         .select(blog_constant_1.selectedFileld);
     return result;
 });
-//ger all blogs
 const findAllBlogsFromDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
-    const blogQuery = new queryBuilder_1.default(blog_model_1.Blog.find().populate('author').select(blog_constant_1.selectedFileld), query).search(blog_constant_1.searchableFieldsForBlog);
-    const result = blogQuery.modelQuery;
+    const blogQuery = new queryBuilder_1.default(blog_model_1.Blog.find().populate('author', 'name email').select('title content'), query)
+        .search(blog_constant_1.searchableFieldsForBlog)
+        .filter()
+        .sort();
+    const result = yield blogQuery.modelQuery;
     return result;
 });
+exports.default = findAllBlogsFromDB;
 //update blog
 const updateBlogIntoDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
     //check if blog exists
@@ -41,7 +44,7 @@ const updateBlogIntoDB = (id, payload) => __awaiter(void 0, void 0, void 0, func
     }
     //update blog
     const result = yield blog_model_1.Blog.findByIdAndUpdate(id, payload, { new: true })
-        .populate('author')
+        .populate('author', 'name email')
         .select(blog_constant_1.selectedFileld);
     return result;
 });

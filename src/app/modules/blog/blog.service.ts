@@ -9,20 +9,25 @@ const createBlogIntoDB = async (payload: TBlog) => {
   const createdBlog = await Blog.create(payload)
   const { _id } = createdBlog
   const result = await Blog.findById(_id)
-    .populate('author')
+    .populate('author', 'name email')
     .select(selectedFileld)
   return result
 }
 
-//ger all blogs
 const findAllBlogsFromDB = async (query: Record<string, unknown>) => {
   const blogQuery = new QueryBuilder(
-    Blog.find().populate('author').select(selectedFileld),
+    Blog.find().populate('author', 'name email').select('title content'),
     query,
-  ).search(searchableFieldsForBlog)
-  const result = blogQuery.modelQuery
+  )
+    .search(searchableFieldsForBlog)
+    .filter()
+    .sort()
+
+  const result = await blogQuery.modelQuery
   return result
 }
+
+export default findAllBlogsFromDB
 
 //update blog
 const updateBlogIntoDB = async (id: string, payload: TBlog) => {
@@ -34,7 +39,7 @@ const updateBlogIntoDB = async (id: string, payload: TBlog) => {
 
   //update blog
   const result = await Blog.findByIdAndUpdate(id, payload, { new: true })
-    .populate('author')
+    .populate('author', 'name email')
     .select(selectedFileld)
   return result
 }

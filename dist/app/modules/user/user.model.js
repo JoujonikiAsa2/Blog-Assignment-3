@@ -89,7 +89,7 @@ const userSchema = new mongoose_1.default.Schema({
 });
 userSchema.statics.isUserAlreadyExists = function (email) {
     return __awaiter(this, void 0, void 0, function* () {
-        const user = yield exports.User.findOne({ email });
+        const user = yield exports.User.findOne({ email }).select('-password');
         return user;
     });
 };
