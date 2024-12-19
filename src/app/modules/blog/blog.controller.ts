@@ -15,6 +15,19 @@ const createBlog = asyncWrapper(async (req, res) => {
   })
 })
 
+//find all blogs
+const findAllBlogs = asyncWrapper(async (req, res) => {
+    const search = req.query
+    console.log(search)
+  const result = await blogServices.findAllBlogsFromDB(search)
+  sendResponse(res, {
+    success: true,
+    message: 'Blogs fetched successfully',
+    statusCode: httpStatus.OK,
+    data: result,
+  })
+})
+
 //update blog
 const updateBlog = asyncWrapper(async (req, res) => {
   const { id } = req.params
@@ -41,5 +54,6 @@ const deleteBlog = asyncWrapper(async (req, res) => {
 export const blogControllers = {
   createBlog,
   updateBlog,
-  deleteBlog
+  deleteBlog,
+  findAllBlogs
 }
