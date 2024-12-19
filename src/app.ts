@@ -2,6 +2,7 @@ import express, { Application, Request, Response } from 'express'
 import cors from 'cors'
 const app:Application = express()
 import httpStatus from 'http-status'
+import globalErrorHandler from './app/middlewares/globalErrorHandler'
 
 app.use(express.json())
 app.use(cors())
@@ -12,5 +13,7 @@ app.get('/', (req:Request, res: Response) => {
         message: 'Server is running successfully'
     })
 })
+
+app.use(globalErrorHandler)
 
 export default app
