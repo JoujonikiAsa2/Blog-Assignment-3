@@ -1,5 +1,5 @@
 import mongoose, { model } from 'mongoose'
-import { TUser } from './user.interface'
+import { TUser, UserModel } from './user.interface'
 
 const userSchema = new mongoose.Schema(
   {
@@ -43,4 +43,9 @@ const userSchema = new mongoose.Schema(
   },
 )
 
-export const User = model<TUser>('User', userSchema)
+userSchema.statics.isUserAlreadyExists = async function(email:string){
+    const user = await User.findOne({email})
+    return user
+}
+
+export const User = model<TUser, UserModel>('User', userSchema)
