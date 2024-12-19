@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authService = void 0;
+exports.authServices = void 0;
 const http_status_1 = __importDefault(require("http-status"));
 const ApiError_1 = __importDefault(require("../../errors/ApiError"));
 const user_model_1 = require("../user/user.model");
@@ -31,7 +31,7 @@ const registerUserIntoDB = (payload) => __awaiter(void 0, void 0, void 0, functi
 const loginUserFromDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = payload;
     //check user
-    const isExists = yield user_model_1.User.isUserAlreadyExists(email);
+    const isExists = yield user_model_1.User.findOne({ email: email });
     if (!isExists) {
         throw new ApiError_1.default('User not found', http_status_1.default.NOT_FOUND);
     }
@@ -45,7 +45,7 @@ const loginUserFromDB = (payload) => __awaiter(void 0, void 0, void 0, function*
         throw new ApiError_1.default('The user is blocked', http_status_1.default.BAD_REQUEST);
     }
     const jwtpayload = {
-        email: isExists === null || isExists === void 0 ? void 0 : isExists.email,
+        id: isExists === null || isExists === void 0 ? void 0 : isExists._id,
         role: isExists === null || isExists === void 0 ? void 0 : isExists.role,
     };
     //create token
@@ -54,7 +54,7 @@ const loginUserFromDB = (payload) => __awaiter(void 0, void 0, void 0, function*
         token: accessToken
     };
 });
-exports.authService = {
+exports.authServices = {
     registerUserIntoDB,
     loginUserFromDB,
 };

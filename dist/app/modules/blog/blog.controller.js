@@ -12,31 +12,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authController = void 0;
+exports.blogControllers = void 0;
 const http_status_1 = __importDefault(require("http-status"));
 const asyncWrapper_1 = __importDefault(require("../../utils/asyncWrapper"));
-const auth_service_1 = require("./auth.service");
 const sendResponse_1 = require("../../utils/sendResponse");
-const registerUser = (0, asyncWrapper_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield auth_service_1.authServices.registerUserIntoDB(req.body);
+const blog_service_1 = require("./blog.service");
+const createBlog = (0, asyncWrapper_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { user } = req;
+    req.body.author = user.id;
+    const result = yield blog_service_1.blogServices.createBlogIntoDB(req.body);
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
-        message: 'User registered successfully',
+        message: 'Blog created successfully',
         statusCode: http_status_1.default.CREATED,
         data: result,
     });
 }));
-//login user
-const loginUser = (0, asyncWrapper_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield auth_service_1.authServices.loginUserFromDB(req.body);
-    (0, sendResponse_1.sendResponse)(res, {
-        success: true,
-        message: 'Login successful',
-        statusCode: http_status_1.default.OK,
-        data: result,
-    });
-}));
-exports.authController = {
-    registerUser,
-    loginUser
+exports.blogControllers = {
+    createBlog
 };

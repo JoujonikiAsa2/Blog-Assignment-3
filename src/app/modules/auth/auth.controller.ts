@@ -1,10 +1,10 @@
 import httpStatus from 'http-status'
 import asyncWrapper from '../../utils/asyncWrapper'
-import { authService } from './auth.service'
+import { authServices } from './auth.service'
 import { sendResponse } from '../../utils/sendResponse'
 
 const registerUser = asyncWrapper(async (req, res) => {
-  const result = await authService.registerUserIntoDB(req.body)
+  const result = await authServices.registerUserIntoDB(req.body)
   sendResponse(res, {
     success: true,
     message: 'User registered successfully',
@@ -15,7 +15,7 @@ const registerUser = asyncWrapper(async (req, res) => {
 
 //login user
 const loginUser = asyncWrapper(async (req, res) => {
-  const result = await authService.loginUserFromDB(req.body)
+  const result = await authServices.loginUserFromDB(req.body)
   sendResponse(res, {
     success: true,
     message: 'Login successful',

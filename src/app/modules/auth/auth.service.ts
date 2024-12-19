@@ -20,14 +20,14 @@ const loginUserFromDB = async (payload: TLoginUser) => {
   const { email, password } = payload
 
   //check user
-  const isExists = await User.isUserAlreadyExists(email)
+  const isExists = await User.findOne({email: email})
   if (!isExists) {
     throw new ApiError('User not found', httpStatus.NOT_FOUND)
   }
 
   //check password
   const isPasswordMatch = await User.isPasswordMatch(
-    isExists?.password,
+    isExists?.password as string,
     password,
   )
   if (!isPasswordMatch) {
@@ -40,7 +40,7 @@ const loginUserFromDB = async (payload: TLoginUser) => {
   }
 
   const jwtpayload = {
-    email: isExists?.email,
+    id: isExists?._id,
     role: isExists?.role,
   }
 
@@ -55,7 +55,7 @@ const loginUserFromDB = async (payload: TLoginUser) => {
     token: accessToken
   }
 }
-export const authService = {
+export const authServices = {
   registerUserIntoDB,
   loginUserFromDB,
 }
