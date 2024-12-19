@@ -1,6 +1,4 @@
-import httpStatus from 'http-status'
 import asyncWrapper from '../utils/asyncWrapper'
-import ApiError from '../errors/ApiError'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import config from '../config'
 import { User } from '../modules/user/user.model'
@@ -11,7 +9,9 @@ const auth = (...userRole: TUserRole[]) =>
     //check token
     const token = req.headers.authorization
     if (!token) {
-      throw new ApiError('Forbidden access', httpStatus.UNAUTHORIZED)
+      const error = new Error('Authorization Failed!')
+      error.name = 'AuthorizationError'
+      throw error
     }
 
     //verify token
@@ -24,13 +24,17 @@ const auth = (...userRole: TUserRole[]) =>
     //check user
     const user = await User.findById(id)
     if (!user) {
-      throw new ApiError('Forbidden access', httpStatus.UNAUTHORIZED)
+      const error = new Error('Authorization Failed!')
+      error.name = 'AuthorizationError'
+      throw error
     }
 
     //check user is blocked
-    const blockedUser = await User.findOne({_id: id, isBlocked: true })
+    const blockedUser = await User.findOne({ _id: id, isBlocked: true })
     if (blockedUser) {
-      throw new ApiError('Forbidden access', httpStatus.UNAUTHORIZED)
+      const error = new Error('Authorization Failed!')
+      error.name = 'AuthorizationError'
+      throw error
     }
 
     //check user role
@@ -38,7 +42,9 @@ const auth = (...userRole: TUserRole[]) =>
       //add user to request
       req.user = decoded as JwtPayload
     } else {
-      throw new ApiError('Forbidden access', httpStatus.UNAUTHORIZED)
+      const error = new Error('Authorization Failed!')
+      error.name = 'AuthorizationError'
+      throw error
     }
     next()
   })

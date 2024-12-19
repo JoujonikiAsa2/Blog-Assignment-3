@@ -1,16 +1,10 @@
-import httpStatus from 'http-status'
-import ApiError from '../../errors/ApiError'
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { User } from '../user/user.model'
 import { TLoginUser } from './auth.interface'
 import config from '../../config'
 import createToken from './auth.utils'
 
 const registerUserIntoDB = async (payload: TLoginUser) => {
-  const { email } = payload
-  const userAlreadyExists = await User.isUserAlreadyExists(email)
-  if (userAlreadyExists) {
-    throw new ApiError('User already exists', httpStatus.BAD_REQUEST)
-  }
   const createedUser = await User.create(payload)
   const {_id} = createedUser
   const result = await User.findById(_id).select('name email')
@@ -24,7 +18,9 @@ const loginUserFromDB = async (payload: TLoginUser) => {
   //check user
   const isExists = await User.findOne({email: email})
   if (!isExists) {
-    throw new ApiError('User not found', httpStatus.NOT_FOUND)
+    const error = new Error('Authentication Failed! Invalid Credentials') as any;
+    error.name = 'AuthenticationError';
+    throw error;
   }
 
   //check password
@@ -33,12 +29,16 @@ const loginUserFromDB = async (payload: TLoginUser) => {
     password,
   )
   if (!isPasswordMatch) {
-    throw new ApiError('Invalid credentials', httpStatus.UNAUTHORIZED)
+    const error = new Error('Authentication Failed! Invalid Credentials') as any;
+    error.name = 'AuthenticationError';
+    throw error;
   }
 
   //check user is blocked
   if (isExists?.isBlocked) {
-    throw new ApiError('The user is blocked', httpStatus.BAD_REQUEST)
+    const error = new Error('Invalid Credentials') as any;
+    error.name = 'AuthenticationError';
+    throw error;
   }
 
   const jwtpayload = {
