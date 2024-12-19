@@ -1,15 +1,17 @@
-import httpStatus from "http-status"
-import asyncWrapper from "../../utils/asyncWrapper"
-import { authService } from "./auth.service"
+import httpStatus from 'http-status'
+import asyncWrapper from '../../utils/asyncWrapper'
+import { authService } from './auth.service'
+import { sendResponse } from '../../utils/sendResponse'
 
 const registerUser = asyncWrapper(async (req, res) => {
-    const result = await authService.registerUserIntoDB(req.body)
-    res.status(httpStatus.OK).json({
-        success: true,
-        message: 'User created successfully',
-        data: result
-    })
+  const result = await authService.registerUserIntoDB(req.body)
+  sendResponse(res, {
+    success: true,
+    message: 'User registered successfully',
+    statusCode: httpStatus.OK,
+    data: result,
+  })
 })
 export const authController = {
-    registerUser
+  registerUser,
 }
