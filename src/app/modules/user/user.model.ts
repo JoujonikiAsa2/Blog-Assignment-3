@@ -1,5 +1,7 @@
 import mongoose, { model } from 'mongoose'
 import { TUser, UserModel } from './user.interface'
+import bcrypt from 'bcrypt'
+import config from '../../config'
 
 const userSchema = new mongoose.Schema(
   {
@@ -47,5 +49,15 @@ userSchema.statics.isUserAlreadyExists = async function(email:string){
     const user = await User.findOne({email})
     return user
 }
+
+userSchema.pre('save', async function (next) {
+    this.password = await bcrypt.hash(this.password, Number(config.bcrypt_salt_rounds))
+    next()
+})
+
+userSchema.post('save', async function (doc,next) {
+    doc.password = ""
+    next()
+})
 
 export const User = model<TUser, UserModel>('User', userSchema)
