@@ -8,7 +8,7 @@ const registerUser = asyncWrapper(async (req, res) => {
   sendResponse(res, {
     success: true,
     message: 'User registered successfully',
-    statusCode: httpStatus.OK,
+    statusCode: httpStatus.CREATED,
     data: result,
   })
 })
