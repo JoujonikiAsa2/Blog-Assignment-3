@@ -22,10 +22,21 @@ const registerUser = (0, asyncWrapper_1.default)((req, res) => __awaiter(void 0,
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
         message: 'User registered successfully',
+        statusCode: http_status_1.default.CREATED,
+        data: result,
+    });
+}));
+//login user
+const loginUser = (0, asyncWrapper_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield auth_service_1.authService.loginUserFromDB(req.body);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        message: 'Login successful',
         statusCode: http_status_1.default.OK,
         data: result,
     });
 }));
 exports.authController = {
     registerUser,
+    loginUser
 };

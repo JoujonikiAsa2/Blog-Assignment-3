@@ -41,9 +41,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
+const config_1 = __importDefault(require("../../config"));
 const userSchema = new mongoose_1.default.Schema({
     name: {
         type: String,
@@ -88,4 +93,21 @@ userSchema.statics.isUserAlreadyExists = function (email) {
         return user;
     });
 };
+userSchema.statics.isPasswordMatch = function (hashPassword, userPassword) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield bcrypt_1.default.compare(userPassword, hashPassword);
+    });
+};
+userSchema.pre('save', function (next) {
+    return __awaiter(this, void 0, void 0, function* () {
+        this.password = yield bcrypt_1.default.hash(this.password, Number(config_1.default.bcrypt_salt_rounds));
+        next();
+    });
+});
+userSchema.post('save', function (doc, next) {
+    return __awaiter(this, void 0, void 0, function* () {
+        doc.password = "";
+        next();
+    });
+});
 exports.User = (0, mongoose_1.model)('User', userSchema);
