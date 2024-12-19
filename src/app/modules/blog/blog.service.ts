@@ -27,7 +27,18 @@ const updateBlogIntoDB = async (id: string, payload: TBlog) => {
   return result
 }
 
+//delete blog
+const deleteBlogFromDB = async (id: string) => {
+    const isBlogExists = await Blog.findById(id)
+    if (!isBlogExists) {
+      throw new ApiError('Blog not found', httpStatus.NOT_FOUND)
+    }
+    const result = await Blog.findByIdAndDelete(id)
+    return result
+}
+
 export const blogServices = {
   createBlogIntoDB,
   updateBlogIntoDB,
+  deleteBlogFromDB
 }

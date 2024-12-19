@@ -8,13 +8,46 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogServices = void 0;
+const http_status_1 = __importDefault(require("http-status"));
+const ApiError_1 = __importDefault(require("../../errors/ApiError"));
 const blog_model_1 = require("./blog.model");
 const createBlogIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield blog_model_1.Blog.create(payload);
+    const createdBlog = yield blog_model_1.Blog.create(payload);
+    const { _id } = createdBlog;
+    const result = yield blog_model_1.Blog.findById(_id)
+        .populate('author')
+        .select('title content author');
+    return result;
+});
+//update blog
+const updateBlogIntoDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    //check if blog exists
+    const isBlogExists = yield blog_model_1.Blog.findById(id);
+    if (!isBlogExists) {
+        throw new ApiError_1.default('Blog not found', http_status_1.default.NOT_FOUND);
+    }
+    //update blog
+    const result = yield blog_model_1.Blog.findByIdAndUpdate(id, payload, { new: true })
+        .populate('author')
+        .select('title content author');
+    return result;
+});
+//delete blog
+const deleteBlogFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const isBlogExists = yield blog_model_1.Blog.findById(id);
+    if (!isBlogExists) {
+        throw new ApiError_1.default('Blog not found', http_status_1.default.NOT_FOUND);
+    }
+    const result = yield blog_model_1.Blog.findByIdAndDelete(id);
     return result;
 });
 exports.blogServices = {
-    createBlogIntoDB
+    createBlogIntoDB,
+    updateBlogIntoDB,
+    deleteBlogFromDB
 };

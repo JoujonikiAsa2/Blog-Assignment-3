@@ -24,7 +24,9 @@ const registerUserIntoDB = (payload) => __awaiter(void 0, void 0, void 0, functi
     if (userAlreadyExists) {
         throw new ApiError_1.default('User already exists', http_status_1.default.BAD_REQUEST);
     }
-    const result = yield user_model_1.User.create(payload);
+    const createedUser = yield user_model_1.User.create(payload);
+    const { _id } = createedUser;
+    const result = yield user_model_1.User.findById(_id).select('name email');
     return result;
 });
 //

@@ -28,6 +28,29 @@ const createBlog = (0, asyncWrapper_1.default)((req, res) => __awaiter(void 0, v
         data: result,
     });
 }));
+//update blog
+const updateBlog = (0, asyncWrapper_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const blog = req.body;
+    const result = yield blog_service_1.blogServices.updateBlogIntoDB(id, blog);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        message: 'Blog updated successfully',
+        statusCode: http_status_1.default.OK,
+        data: result,
+    });
+}));
+const deleteBlog = (0, asyncWrapper_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    yield blog_service_1.blogServices.deleteBlogFromDB(id);
+    res.status(http_status_1.default.OK).json({
+        success: true,
+        message: 'Blog deleted successfully',
+        statusCode: http_status_1.default.OK,
+    });
+}));
 exports.blogControllers = {
-    createBlog
+    createBlog,
+    updateBlog,
+    deleteBlog
 };
