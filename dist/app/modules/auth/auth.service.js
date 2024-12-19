@@ -9,9 +9,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const asyncWrapper = (fn) => {
-    return ((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-        Promise.resolve(fn(req, res, next)).catch((err) => next(err));
-    }));
+exports.authService = void 0;
+const user_model_1 = require("../user/user.model");
+const registerUserIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email } = payload;
+    const userAlreadyExists = yield user_model_1.User.isUserAlreadyExists(email);
+    if (userAlreadyExists) {
+        throw new Error('User already exists');
+    }
+    const result = yield user_model_1.User.create(payload);
+    return result;
+});
+exports.authService = {
+    registerUserIntoDB,
 };
-exports.default = asyncWrapper;
