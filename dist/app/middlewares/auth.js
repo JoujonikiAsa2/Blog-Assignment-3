@@ -12,9 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const http_status_1 = __importDefault(require("http-status"));
 const asyncWrapper_1 = __importDefault(require("../utils/asyncWrapper"));
-const ApiError_1 = __importDefault(require("../errors/ApiError"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = __importDefault(require("../config"));
 const user_model_1 = require("../modules/user/user.model");
@@ -22,7 +20,9 @@ const auth = (...userRole) => (0, asyncWrapper_1.default)((req, res, next) => __
     //check token
     const token = req.headers.authorization;
     if (!token) {
-        throw new ApiError_1.default('Forbidden access', http_status_1.default.UNAUTHORIZED);
+        const error = new Error('Authorization Failed!');
+        error.name = 'AuthorizationError';
+        throw error;
     }
     //verify token
     const decoded = jsonwebtoken_1.default.verify(token, config_1.default.jwt_access_secret);
@@ -30,12 +30,16 @@ const auth = (...userRole) => (0, asyncWrapper_1.default)((req, res, next) => __
     //check user
     const user = yield user_model_1.User.findById(id);
     if (!user) {
-        throw new ApiError_1.default('Forbidden access', http_status_1.default.UNAUTHORIZED);
+        const error = new Error('Authorization Failed!');
+        error.name = 'AuthorizationError';
+        throw error;
     }
     //check user is blocked
     const blockedUser = yield user_model_1.User.findOne({ _id: id, isBlocked: true });
     if (blockedUser) {
-        throw new ApiError_1.default('Forbidden access', http_status_1.default.UNAUTHORIZED);
+        const error = new Error('Authorization Failed!');
+        error.name = 'AuthorizationError';
+        throw error;
     }
     //check user role
     if (userRole && userRole.includes(role)) {
@@ -43,7 +47,9 @@ const auth = (...userRole) => (0, asyncWrapper_1.default)((req, res, next) => __
         req.user = decoded;
     }
     else {
-        throw new ApiError_1.default('Forbidden access', http_status_1.default.UNAUTHORIZED);
+        const error = new Error('Authorization Failed!');
+        error.name = 'AuthorizationError';
+        throw error;
     }
     next();
 }));

@@ -13,17 +13,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authServices = void 0;
-const http_status_1 = __importDefault(require("http-status"));
-const ApiError_1 = __importDefault(require("../../errors/ApiError"));
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const user_model_1 = require("../user/user.model");
 const config_1 = __importDefault(require("../../config"));
 const auth_utils_1 = __importDefault(require("./auth.utils"));
 const registerUserIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email } = payload;
-    const userAlreadyExists = yield user_model_1.User.isUserAlreadyExists(email);
-    if (userAlreadyExists) {
-        throw new ApiError_1.default('User already exists', http_status_1.default.BAD_REQUEST);
-    }
     const createedUser = yield user_model_1.User.create(payload);
     const { _id } = createedUser;
     const result = yield user_model_1.User.findById(_id).select('name email');
@@ -35,16 +29,22 @@ const loginUserFromDB = (payload) => __awaiter(void 0, void 0, void 0, function*
     //check user
     const isExists = yield user_model_1.User.findOne({ email: email });
     if (!isExists) {
-        throw new ApiError_1.default('User not found', http_status_1.default.NOT_FOUND);
+        const error = new Error('Authentication Failed! Invalid Credentials');
+        error.name = 'AuthenticationError';
+        throw error;
     }
     //check password
     const isPasswordMatch = yield user_model_1.User.isPasswordMatch(isExists === null || isExists === void 0 ? void 0 : isExists.password, password);
     if (!isPasswordMatch) {
-        throw new ApiError_1.default('Invalid credentials', http_status_1.default.UNAUTHORIZED);
+        const error = new Error('Authentication Failed! Invalid Credentials');
+        error.name = 'AuthenticationError';
+        throw error;
     }
     //check user is blocked
     if (isExists === null || isExists === void 0 ? void 0 : isExists.isBlocked) {
-        throw new ApiError_1.default('The user is blocked', http_status_1.default.BAD_REQUEST);
+        const error = new Error('Invalid Credentials');
+        error.name = 'AuthenticationError';
+        throw error;
     }
     const jwtpayload = {
         id: isExists === null || isExists === void 0 ? void 0 : isExists._id,
