@@ -11,5 +11,6 @@ export type TUser = {
 }
 
 export interface UserModel extends Model<TUser> {
-  isUserAlreadyExists(email: string): Promise<TUser | null>
+  isUserAlreadyExists(email: string): Promise<TUser | null>,
+  isPasswordMatch(password: string, userPassword: string): Promise<boolean>
 }

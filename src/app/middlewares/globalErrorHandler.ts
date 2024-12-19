@@ -1,11 +1,10 @@
 import { ErrorRequestHandler } from "express";
-import httpStatus from "http-status";
 
 const globalErrorHandler:ErrorRequestHandler = (err, req, res, next) => {
-    res.json({
+    res.status(err?.statusCode).json({
         success: false,
         message: err.message,
-        statusCode: httpStatus.BAD_REQUEST,
+        statusCode: err?.statusCode,
         error: err,
         stack: err.stack
     })

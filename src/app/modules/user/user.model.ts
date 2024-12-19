@@ -50,6 +50,10 @@ userSchema.statics.isUserAlreadyExists = async function(email:string){
     return user
 }
 
+userSchema.statics.isPasswordMatch = async function(hashPassword:string, userPassword:string){
+    return await bcrypt.compare(userPassword, hashPassword)
+}
+
 userSchema.pre('save', async function (next) {
     this.password = await bcrypt.hash(this.password, Number(config.bcrypt_salt_rounds))
     next()

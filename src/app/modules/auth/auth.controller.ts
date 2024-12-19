@@ -12,6 +12,18 @@ const registerUser = asyncWrapper(async (req, res) => {
     data: result,
   })
 })
+
+//login user
+const loginUser = asyncWrapper(async (req, res) => {
+  const result = await authService.loginUserFromDB(req.body)
+  sendResponse(res, {
+    success: true,
+    message: 'Login successful',
+    statusCode: httpStatus.OK,
+    data: result,
+  })
+})
 export const authController = {
   registerUser,
+  loginUser
 }
