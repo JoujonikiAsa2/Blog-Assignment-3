@@ -31,7 +31,8 @@ const findAllBlogs = asyncWrapper(async (req, res) => {
 const updateBlog = asyncWrapper(async (req, res) => {
   const { id } = req.params
   const blog = req.body
-  const result = await blogServices.updateBlogIntoDB(id, blog)
+  const {user} = req
+  const result = await blogServices.updateBlogIntoDB(id, user, blog)
   sendResponse(res, {
     success: true,
     message: 'Blog updated successfully',
