@@ -38,9 +38,8 @@ const loginUserFromDB = async (payload: TLoginUser) => {
 
   //check user is blocked
   if (isExists?.isBlocked === true) {
-    // const error = new Error('User is bloked') as any;
-    // error.name = 'AuthenticationError';
-    throw new ApiError("User is bloked!", httpStatus.FORBIDDEN);
+    const error = new Error('Authentication Failed! User is blocked') as any;
+    error.name = 'AuthenticationError';
   }
 
   const jwtpayload = {
