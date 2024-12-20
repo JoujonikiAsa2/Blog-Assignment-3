@@ -43,7 +43,8 @@ const findAllBlogs = (0, asyncWrapper_1.default)((req, res) => __awaiter(void 0,
 const updateBlog = (0, asyncWrapper_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const blog = req.body;
-    const result = yield blog_service_1.blogServices.updateBlogIntoDB(id, blog);
+    const { user } = req;
+    const result = yield blog_service_1.blogServices.updateBlogIntoDB(id, user, blog);
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
         message: 'Blog updated successfully',

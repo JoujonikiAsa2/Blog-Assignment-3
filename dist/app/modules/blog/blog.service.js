@@ -36,11 +36,11 @@ const findAllBlogsFromDB = (query) => __awaiter(void 0, void 0, void 0, function
 });
 exports.default = findAllBlogsFromDB;
 //update blog
-const updateBlogIntoDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
-    //check if blog exists
-    const isBlogExists = yield blog_model_1.Blog.findById(id);
-    if (!isBlogExists) {
-        throw new ApiError_1.default('Blog not found', http_status_1.default.NOT_FOUND);
+const updateBlogIntoDB = (id, user, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    //check if the blog and author who try to update
+    const isValidBlogAuthor = yield blog_model_1.Blog.findOne({ _id: id, author: user.id });
+    if (!isValidBlogAuthor) {
+        throw new ApiError_1.default('Unauthorized access', http_status_1.default.NOT_FOUND);
     }
     //update blog
     const result = yield blog_model_1.Blog.findByIdAndUpdate(id, payload, { new: true })
