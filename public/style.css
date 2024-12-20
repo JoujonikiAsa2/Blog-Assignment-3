@@ -1,0 +1,21 @@
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.text-container-shape{
+    height: 300px;
+    width: 500px;
+    background-color: rgb(236, 231, 240);
+    border-radius: 10px;
+    box-shadow: 10px 10px 5px #aaaaaa;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.header{
+    color: rgb(167, 39, 199);
+    text-align: center;
+}
