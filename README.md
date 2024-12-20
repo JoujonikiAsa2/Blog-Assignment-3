@@ -11,7 +11,7 @@ This backend project is designed to serve as the foundation of a blogging platfo
 4. API Endpoints
   
 
-## Features
+## Key Features
 **1. User Role**
 ***User***
    - Can register as user.
