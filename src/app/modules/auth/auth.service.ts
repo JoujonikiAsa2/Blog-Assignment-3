@@ -3,8 +3,6 @@ import { User } from '../user/user.model'
 import { TLoginUser } from './auth.interface'
 import config from '../../config'
 import createToken from './auth.utils'
-import ApiError from '../../errors/ApiError'
-import httpStatus from 'http-status'
 
 const registerUserIntoDB = async (payload: TLoginUser) => {
   const createedUser = await User.create(payload)
