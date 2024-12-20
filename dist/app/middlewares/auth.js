@@ -17,8 +17,9 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = __importDefault(require("../config"));
 const user_model_1 = require("../modules/user/user.model");
 const auth = (...userRole) => (0, asyncWrapper_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     //check token
-    const token = req.headers.authorization;
+    const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(' ')[1];
     if (!token) {
         const error = new Error('Authorization Failed!');
         error.name = 'AuthorizationError';

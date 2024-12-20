@@ -7,7 +7,8 @@ import { TUserRole } from '../modules/user/user.constant'
 const auth = (...userRole: TUserRole[]) =>
   asyncWrapper(async (req, res, next) => {
     //check token
-    const token = req.headers.authorization
+    const token = req.headers.authorization?.split(' ')[1]
+
     if (!token) {
       const error = new Error('Authorization Failed!')
       error.name = 'AuthorizationError'

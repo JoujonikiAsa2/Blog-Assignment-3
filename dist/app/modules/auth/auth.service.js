@@ -41,9 +41,10 @@ const loginUserFromDB = (payload) => __awaiter(void 0, void 0, void 0, function*
         throw error;
     }
     //check user is blocked
-    if ((isExists === null || isExists === void 0 ? void 0 : isExists.isBlocked) === true) {
+    if (isExists.isBlocked === true) {
         const error = new Error('Authentication Failed! User is blocked');
         error.name = 'AuthenticationError';
+        throw error;
     }
     const jwtpayload = {
         id: isExists === null || isExists === void 0 ? void 0 : isExists._id,
