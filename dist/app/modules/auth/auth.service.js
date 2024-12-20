@@ -17,6 +17,8 @@ exports.authServices = void 0;
 const user_model_1 = require("../user/user.model");
 const config_1 = __importDefault(require("../../config"));
 const auth_utils_1 = __importDefault(require("./auth.utils"));
+const ApiError_1 = __importDefault(require("../../errors/ApiError"));
+const http_status_1 = __importDefault(require("http-status"));
 const registerUserIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const createedUser = yield user_model_1.User.create(payload);
     const { _id } = createedUser;
@@ -41,10 +43,10 @@ const loginUserFromDB = (payload) => __awaiter(void 0, void 0, void 0, function*
         throw error;
     }
     //check user is blocked
-    if (isExists === null || isExists === void 0 ? void 0 : isExists.isBlocked) {
-        const error = new Error('Invalid Credentials');
-        error.name = 'AuthenticationError';
-        throw error;
+    if ((isExists === null || isExists === void 0 ? void 0 : isExists.isBlocked) === true) {
+        // const error = new Error('User is bloked') as any;
+        // error.name = 'AuthenticationError';
+        throw new ApiError_1.default("User is bloked!", http_status_1.default.FORBIDDEN);
     }
     const jwtpayload = {
         id: isExists === null || isExists === void 0 ? void 0 : isExists._id,
