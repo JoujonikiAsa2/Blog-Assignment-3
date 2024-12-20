@@ -3,6 +3,8 @@ import { User } from '../user/user.model'
 import { TLoginUser } from './auth.interface'
 import config from '../../config'
 import createToken from './auth.utils'
+import ApiError from '../../errors/ApiError'
+import httpStatus from 'http-status'
 
 const registerUserIntoDB = async (payload: TLoginUser) => {
   const createedUser = await User.create(payload)
@@ -35,10 +37,10 @@ const loginUserFromDB = async (payload: TLoginUser) => {
   }
 
   //check user is blocked
-  if (isExists?.isBlocked) {
-    const error = new Error('Invalid Credentials') as any;
-    error.name = 'AuthenticationError';
-    throw error;
+  if (isExists?.isBlocked === true) {
+    // const error = new Error('User is bloked') as any;
+    // error.name = 'AuthenticationError';
+    throw new ApiError("User is bloked!", httpStatus.FORBIDDEN);
   }
 
   const jwtpayload = {
