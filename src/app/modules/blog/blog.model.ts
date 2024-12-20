@@ -1,6 +1,7 @@
 import mongoose, { model } from 'mongoose'
 import { TBlog } from './blog.interface'
 
+//blog schema
 const blogSchema = new mongoose.Schema(
   {
     title: {

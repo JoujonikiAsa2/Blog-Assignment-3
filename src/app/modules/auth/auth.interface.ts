@@ -1,3 +1,4 @@
+// Login user interface
 export type TLoginUser = {
     name: string,
     email: string,

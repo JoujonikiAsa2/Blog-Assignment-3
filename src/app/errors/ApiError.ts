@@ -1,3 +1,4 @@
+//custom error response handler
 class ApiError extends Error {
   public statusCode: number
   constructor(message: string, statusCode: number,  stack = '') {

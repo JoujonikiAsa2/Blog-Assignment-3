@@ -1,5 +1,6 @@
 import { z } from 'zod'
 
+//register user validation
 const createUserSchemaValidation = z.object({
     body: z.object({
         name: z.string({
@@ -14,6 +15,20 @@ const createUserSchemaValidation = z.object({
     })
 })
 
+
+//login user validation
+const loginUserSchemaValidation = z.object({
+    body: z.object({
+        email: z.string({
+            required_error: 'Email is required'
+        }).email('Invalid email'),
+        password: z.string({
+            required_error: 'Password is required'
+        }),
+    })
+})
+
 export const userSchemaValidation = {
-    createUserSchemaValidation
+    createUserSchemaValidation,
+    loginUserSchemaValidation
 }

@@ -3,6 +3,7 @@ import asyncWrapper from '../../utils/asyncWrapper'
 import { sendResponse } from '../../utils/sendResponse'
 import { blogServices } from './blog.service'
 
+//create blog
 const createBlog = asyncWrapper(async (req, res) => {
   const { user } = req
   req.body.author = user.id
@@ -41,6 +42,7 @@ const updateBlog = asyncWrapper(async (req, res) => {
   })
 })
 
+//delete blog
 const deleteBlog = asyncWrapper(async (req, res) => {
   const { id } = req.params
   const {user} =  req

@@ -4,9 +4,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const handleZodValidationError = (err) => {
     const error = err;
     const statusCode = 400;
+    const message = "Validation error";
     return {
         statusCode,
-        message: 'Validation Error',
+        message,
         error,
     };
 };

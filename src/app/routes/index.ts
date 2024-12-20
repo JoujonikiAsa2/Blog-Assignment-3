@@ -5,6 +5,7 @@ import { adminRoutes } from '../modules/admin/admin.route'
 
 const router = Router()
 
+//module routes
 const moduleRoutes = [
   {
     path: '/auth',

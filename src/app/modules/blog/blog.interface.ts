@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 
+//blog interface
 export type TBlog = {
   title: string
   content: string

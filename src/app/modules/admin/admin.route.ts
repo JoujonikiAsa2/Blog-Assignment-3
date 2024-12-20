@@ -4,7 +4,7 @@ import { USER_ROLE } from "../user/user.constant";
 import { adminControllers } from "./admin.controller";
 
 const router = Router()
-
+//admin routes
 router.patch('/users/:userId/block', auth(USER_ROLE.admin), adminControllers.blockUser)
 router.delete('/blogs/:id', auth(USER_ROLE.admin), adminControllers.deleteBlog)
 

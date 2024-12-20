@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const asyncWrapper_1 = __importDefault(require("../utils/asyncWrapper"));
+//validate zod request
 const validateRequest = (schema) => {
     return (0, asyncWrapper_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         yield schema.parseAsync({

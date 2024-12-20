@@ -16,8 +16,8 @@ const blockUser = async(userId: string) =>{
 //Delete Blog
 const deleteBlog = async (id: string) => {
     const isBlogExists = await Blog.findById(id)
-    if (!isBlogExists) {
-      throw new ApiError('Blog not found', httpStatus.NOT_FOUND)
+    if (isBlogExists === null || isBlogExists === undefined) {
+      throw new ApiError('Blog not found', httpStatus.NOT_FOUND);
     }
     const result = await Blog.findByIdAndDelete(id)
     return result

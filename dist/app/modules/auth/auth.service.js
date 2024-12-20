@@ -17,13 +17,20 @@ exports.authServices = void 0;
 const user_model_1 = require("../user/user.model");
 const config_1 = __importDefault(require("../../config"));
 const auth_utils_1 = __importDefault(require("./auth.utils"));
+const ApiError_1 = __importDefault(require("../../errors/ApiError"));
+const http_status_1 = __importDefault(require("http-status"));
+//create user
 const registerUserIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const isAlreadyExists = yield user_model_1.User.isUserAlreadyExists(payload.email);
+    if (isAlreadyExists) {
+        throw new ApiError_1.default('Email already exists', http_status_1.default.BAD_REQUEST);
+    }
     const createedUser = yield user_model_1.User.create(payload);
     const { _id } = createedUser;
     const result = yield user_model_1.User.findById(_id).select('name email');
     return result;
 });
-//
+//login user
 const loginUserFromDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = payload;
     //check user
@@ -53,7 +60,7 @@ const loginUserFromDB = (payload) => __awaiter(void 0, void 0, void 0, function*
     //create token
     const accessToken = (0, auth_utils_1.default)(jwtpayload, config_1.default.jwt_access_secret, config_1.default.jwt_access_expires_in);
     return {
-        token: accessToken
+        token: accessToken,
     };
 });
 exports.authServices = {

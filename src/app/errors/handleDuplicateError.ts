@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const handleDuplicateError = (
+const handleDuplicateError = ( //duplicate error handler
   err: any
 ) => {
 

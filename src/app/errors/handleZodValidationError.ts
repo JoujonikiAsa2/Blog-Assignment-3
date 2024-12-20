@@ -4,9 +4,10 @@ import { ZodError } from "zod";
 const handleZodValidationError = (err: ZodError)  => {
     const error = err;
     const statusCode = 400;
+    const message = "Validation error"
     return {
       statusCode,
-      message: 'Validation Error',
+      message,
       error,
     };
   };

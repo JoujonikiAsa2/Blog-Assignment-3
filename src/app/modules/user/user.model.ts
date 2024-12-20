@@ -3,6 +3,7 @@ import { TUser, UserModel } from './user.interface'
 import bcrypt from 'bcrypt'
 import config from '../../config'
 
+//user schema
 const userSchema = new mongoose.Schema(
   {
     name: {

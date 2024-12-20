@@ -11,8 +11,9 @@ const http_status_1 = __importDefault(require("http-status"));
 const ApiError_1 = __importDefault(require("../errors/ApiError"));
 const handleDuplicateError_1 = __importDefault(require("../errors/handleDuplicateError"));
 const handleCastError_1 = __importDefault(require("../errors/handleCastError"));
+//global error handler
 const globalErrorHandler = (err, req, res, next) => {
-    let message = 'Internal Server Error';
+    let message = 'Internal server error';
     let statusCode = http_status_1.default.INTERNAL_SERVER_ERROR;
     let error = err;
     //zod error
@@ -31,13 +32,13 @@ const globalErrorHandler = (err, req, res, next) => {
     }
     // authentication error
     else if (err.name === 'AuthenticationError') {
-        message = 'Unauthorized Access';
+        message = 'Invalid credentials';
         statusCode = 401;
         error = err;
     }
     // authorization error
     else if (err.name === 'AuthorizationError') {
-        message = 'Forbidden Access!';
+        message = 'Forbidden access';
         statusCode = 403;
         error = err;
     }

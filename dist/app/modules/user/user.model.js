@@ -49,6 +49,7 @@ exports.User = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const config_1 = __importDefault(require("../../config"));
+//user schema
 const userSchema = new mongoose_1.default.Schema({
     name: {
         type: String,

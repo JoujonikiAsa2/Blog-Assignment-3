@@ -29,7 +29,7 @@ const blockUser = (userId) => __awaiter(void 0, void 0, void 0, function* () {
 //Delete Blog
 const deleteBlog = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const isBlogExists = yield blog_model_1.Blog.findById(id);
-    if (!isBlogExists) {
+    if (isBlogExists === null || isBlogExists === undefined) {
         throw new ApiError_1.default('Blog not found', http_status_1.default.NOT_FOUND);
     }
     const result = yield blog_model_1.Blog.findByIdAndDelete(id);

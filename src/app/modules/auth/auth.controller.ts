@@ -3,11 +3,12 @@ import asyncWrapper from '../../utils/asyncWrapper'
 import { authServices } from './auth.service'
 import { sendResponse } from '../../utils/sendResponse'
 
+//create a user 
 const registerUser = asyncWrapper(async (req, res) => {
   const result = await authServices.registerUserIntoDB(req.body)
   sendResponse(res, {
     success: true,
-    message: 'User registered successfully',
+    message: "User registered successfully",
     statusCode: httpStatus.CREATED,
     data: result,
   })

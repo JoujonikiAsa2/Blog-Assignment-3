@@ -17,6 +17,7 @@ const http_status_1 = __importDefault(require("http-status"));
 const asyncWrapper_1 = __importDefault(require("../../utils/asyncWrapper"));
 const sendResponse_1 = require("../../utils/sendResponse");
 const blog_service_1 = require("./blog.service");
+//create blog
 const createBlog = (0, asyncWrapper_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { user } = req;
     req.body.author = user.id;
@@ -52,6 +53,7 @@ const updateBlog = (0, asyncWrapper_1.default)((req, res) => __awaiter(void 0, v
         data: result,
     });
 }));
+//delete blog
 const deleteBlog = (0, asyncWrapper_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const { user } = req;

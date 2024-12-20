@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+//try catch wrapper utility function
 const asyncWrapper = (fn) => {
     return ((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         Promise.resolve(fn(req, res, next)).catch((err) => next(err));

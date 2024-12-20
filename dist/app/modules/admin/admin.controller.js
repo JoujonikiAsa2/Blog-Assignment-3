@@ -16,9 +16,10 @@ exports.adminControllers = void 0;
 const http_status_1 = __importDefault(require("http-status"));
 const asyncWrapper_1 = __importDefault(require("../../utils/asyncWrapper"));
 const admin_service_1 = require("./admin.service");
+//block user
 const blockUser = (0, asyncWrapper_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { userId } = req.params;
-    admin_service_1.adminServices.blockUser(userId);
+    yield admin_service_1.adminServices.blockUser(userId);
     res.status(http_status_1.default.OK).json({
         success: true,
         message: 'User blocked successfully',
@@ -28,7 +29,7 @@ const blockUser = (0, asyncWrapper_1.default)((req, res) => __awaiter(void 0, vo
 //delete blog
 const deleteBlog = (0, asyncWrapper_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    admin_service_1.adminServices.deleteBlog(id);
+    yield admin_service_1.adminServices.deleteBlog(id);
     res.status(http_status_1.default.OK).json({
         success: true,
         message: 'Blog deleted successfully',

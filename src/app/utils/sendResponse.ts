@@ -5,6 +5,8 @@ type TResponse<T> = {
     statusCode: number,
     data: T
 }
+
+//send response utility function
 export const sendResponse = <T> (res: Response, response: TResponse<T>) => {
     const { success, message, statusCode, data } = response
     res.status(statusCode).json({

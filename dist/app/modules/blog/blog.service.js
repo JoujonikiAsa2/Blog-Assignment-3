@@ -13,21 +13,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogServices = void 0;
-const http_status_1 = __importDefault(require("http-status"));
-const ApiError_1 = __importDefault(require("../../errors/ApiError"));
 const blog_model_1 = require("./blog.model");
 const queryBuilder_1 = __importDefault(require("../../builder/queryBuilder"));
 const blog_constant_1 = require("./blog.constant");
+const ApiError_1 = __importDefault(require("../../errors/ApiError"));
+const http_status_1 = __importDefault(require("http-status"));
+//create blog
 const createBlogIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const createdBlog = yield blog_model_1.Blog.create(payload);
     const { _id } = createdBlog;
     const result = yield blog_model_1.Blog.findById(_id)
-        .populate('author', 'name email')
+        .populate('author', '-password')
         .select(blog_constant_1.selectedFileld);
     return result;
 });
+//find all blogs
 const findAllBlogsFromDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
-    const blogQuery = new queryBuilder_1.default(blog_model_1.Blog.find().populate('author', 'name email').select('title content'), query)
+    const blogQuery = new queryBuilder_1.default(blog_model_1.Blog.find().populate('author', '-password').select('title content'), query)
         .search(blog_constant_1.searchableFieldsForBlog)
         .filter()
         .sort();
@@ -37,23 +39,35 @@ const findAllBlogsFromDB = (query) => __awaiter(void 0, void 0, void 0, function
 exports.default = findAllBlogsFromDB;
 //update blog
 const updateBlogIntoDB = (id, user, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const isBlogExists = yield blog_model_1.Blog.findById(id);
+    if (isBlogExists === null || isBlogExists === undefined) {
+        throw new ApiError_1.default('Blog not found', http_status_1.default.NOT_FOUND);
+    }
     //check the blog and author who try to update blog
     const isValidBlogAuthor = yield blog_model_1.Blog.findOne({ _id: id, author: user === null || user === void 0 ? void 0 : user.id });
     if (!isValidBlogAuthor) {
-        throw new ApiError_1.default('Unauthorized access', http_status_1.default.UNAUTHORIZED);
+        const error = new Error();
+        error.name = 'AuthorizationError';
+        throw error;
     }
     //update blog
     const result = yield blog_model_1.Blog.findByIdAndUpdate(id, payload, { new: true })
-        .populate('author', 'name email')
+        .populate('author', '-password')
         .select(blog_constant_1.selectedFileld);
     return result;
 });
 //delete blog
 const deleteBlogFromDB = (id, user) => __awaiter(void 0, void 0, void 0, function* () {
+    const isBlogExists = yield blog_model_1.Blog.findById(id);
+    if (isBlogExists === null || isBlogExists === undefined) {
+        throw new ApiError_1.default('Blog not found', http_status_1.default.NOT_FOUND);
+    }
     ////check the blog and author who try to delete blog
     const isValidBlogAuthor = yield blog_model_1.Blog.findOne({ _id: id, author: user === null || user === void 0 ? void 0 : user.id });
     if (!isValidBlogAuthor) {
-        throw new ApiError_1.default('Unauthorized access', http_status_1.default.UNAUTHORIZED);
+        const error = new Error();
+        error.name = 'AuthorizationError';
+        throw error;
     }
     const result = yield blog_model_1.Blog.findByIdAndDelete(id);
     return result;

@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+//auth validation
 const authValidation = z.object({
     body: z.object({
         name: z.string({

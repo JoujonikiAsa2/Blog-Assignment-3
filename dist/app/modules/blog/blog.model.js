@@ -35,6 +35,7 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Blog = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
+//blog schema
 const blogSchema = new mongoose_1.default.Schema({
     title: {
         type: String,

@@ -3,24 +3,34 @@ import { User } from '../user/user.model'
 import { TLoginUser } from './auth.interface'
 import config from '../../config'
 import createToken from './auth.utils'
+import ApiError from '../../errors/ApiError'
+import httpStatus from 'http-status'
 
+//create user
 const registerUserIntoDB = async (payload: TLoginUser) => {
+  const isAlreadyExists = await User.isUserAlreadyExists(payload.email)
+
+  if (isAlreadyExists) {
+    throw new ApiError('Email already exists', httpStatus.BAD_REQUEST)
+  }
+
   const createedUser = await User.create(payload)
-  const {_id} = createedUser
+  const { _id } = createedUser
+
   const result = await User.findById(_id).select('name email')
   return result
 }
 
-//
+//login user
 const loginUserFromDB = async (payload: TLoginUser) => {
   const { email, password } = payload
 
   //check user
-  const isExists = await User.findOne({email: email})
+  const isExists = await User.findOne({ email: email })
   if (!isExists) {
-    const error = new Error('Authentication Failed! Invalid Credentials') as any;
-    error.name = 'AuthenticationError';
-    throw error;
+    const error = new Error('Authentication Failed! Invalid Credentials') as any
+    error.name = 'AuthenticationError'
+    throw error
   }
 
   //check password
@@ -29,15 +39,15 @@ const loginUserFromDB = async (payload: TLoginUser) => {
     password,
   )
   if (!isPasswordMatch) {
-    const error = new Error('Authentication Failed! Invalid Credentials') as any;
-    error.name = 'AuthenticationError';
-    throw error;
+    const error = new Error('Authentication Failed! Invalid Credentials') as any
+    error.name = 'AuthenticationError'
+    throw error
   }
 
   //check user is blocked
   if (isExists.isBlocked === true) {
-    const error = new Error('Authentication Failed! User is blocked') as any;
-    error.name = 'AuthenticationError';
+    const error = new Error('Authentication Failed! User is blocked') as any
+    error.name = 'AuthenticationError'
     throw error
   }
 
@@ -54,7 +64,7 @@ const loginUserFromDB = async (payload: TLoginUser) => {
   )
 
   return {
-    token: accessToken
+    token: accessToken,
   }
 }
 export const authServices = {

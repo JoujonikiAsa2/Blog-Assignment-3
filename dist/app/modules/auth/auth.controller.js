@@ -17,11 +17,12 @@ const http_status_1 = __importDefault(require("http-status"));
 const asyncWrapper_1 = __importDefault(require("../../utils/asyncWrapper"));
 const auth_service_1 = require("./auth.service");
 const sendResponse_1 = require("../../utils/sendResponse");
+//create a user 
 const registerUser = (0, asyncWrapper_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield auth_service_1.authServices.registerUserIntoDB(req.body);
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
-        message: 'User registered successfully',
+        message: "User registered successfully",
         statusCode: http_status_1.default.CREATED,
         data: result,
     });

@@ -1,5 +1,6 @@
 import { Model } from 'mongoose'
 
+//user interface
 export type TUser = {
   name: string
   email: string
@@ -10,6 +11,8 @@ export type TUser = {
   updatedAt: Date
 }
 
+
+//static method interface
 export interface UserModel extends Model<TUser> {
   isUserAlreadyExists(email: string): Promise<TUser | null>,
   isPasswordMatch(password: string, userPassword: string): Promise<boolean>

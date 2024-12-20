@@ -9,8 +9,9 @@ import ApiError from '../errors/ApiError'
 import handleDuplicateError from '../errors/handleDuplicateError'
 import handleCastError from '../errors/handleCastError'
 
+//global error handler
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
-  let message: string = 'Internal Server Error'
+  let message: string = 'Internal server error'
   let statusCode: number = httpStatus.INTERNAL_SERVER_ERROR
   let error: any = err
 
@@ -32,14 +33,14 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
 
   // authentication error
   else if (err.name === 'AuthenticationError') {
-    message = 'Unauthorized Access'
+    message = 'Invalid credentials'
     statusCode = 401
     error = err
   }
 
   // authorization error
   else if (err.name === 'AuthorizationError') {
-    message = 'Forbidden Access!'
+    message = 'Forbidden access'
     statusCode = 403
     error = err
   } 
