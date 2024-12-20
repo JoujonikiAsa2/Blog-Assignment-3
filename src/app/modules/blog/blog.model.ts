@@ -31,4 +31,5 @@ const blogSchema = new mongoose.Schema(
   },
 )
 
+
 export const Blog = model<TBlog>('Blog', blogSchema)

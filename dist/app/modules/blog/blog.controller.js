@@ -54,7 +54,8 @@ const updateBlog = (0, asyncWrapper_1.default)((req, res) => __awaiter(void 0, v
 }));
 const deleteBlog = (0, asyncWrapper_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    yield blog_service_1.blogServices.deleteBlogFromDB(id);
+    const { user } = req;
+    yield blog_service_1.blogServices.deleteBlogFromDB(id, user);
     res.status(http_status_1.default.OK).json({
         success: true,
         message: 'Blog deleted successfully',

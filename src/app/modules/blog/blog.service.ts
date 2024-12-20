@@ -36,13 +36,11 @@ const updateBlogIntoDB = async (
   user: JwtPayload,
   payload: TBlog,
 ) => {
-
-  //check if the blog and author who try to update
-  const isValidBlogAuthor = await Blog.findOne({_id:id, author: user.id})
+  //check the blog and author who try to update blog
+  const isValidBlogAuthor = await Blog.findOne({ _id: id, author: user?.id })
   if (!isValidBlogAuthor) {
-    throw new ApiError('Unauthorized access', httpStatus.NOT_FOUND)
+    throw new ApiError('Unauthorized access', httpStatus.UNAUTHORIZED)
   }
-
 
   //update blog
   const result = await Blog.findByIdAndUpdate(id, payload, { new: true })
@@ -52,10 +50,12 @@ const updateBlogIntoDB = async (
 }
 
 //delete blog
-const deleteBlogFromDB = async (id: string) => {
-  const isBlogExists = await Blog.findById(id)
-  if (!isBlogExists) {
-    throw new ApiError('Blog not found', httpStatus.NOT_FOUND)
+const deleteBlogFromDB = async (id: string, user: JwtPayload) => {
+  
+  ////check the blog and author who try to delete blog
+  const isValidBlogAuthor = await Blog.findOne({ _id: id, author: user?.id })
+  if (!isValidBlogAuthor) {
+    throw new ApiError('Unauthorized access', httpStatus.UNAUTHORIZED)
   }
   const result = await Blog.findByIdAndDelete(id)
   return result

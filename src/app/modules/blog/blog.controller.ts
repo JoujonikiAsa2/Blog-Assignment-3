@@ -43,7 +43,8 @@ const updateBlog = asyncWrapper(async (req, res) => {
 
 const deleteBlog = asyncWrapper(async (req, res) => {
   const { id } = req.params
-  await blogServices.deleteBlogFromDB(id)
+  const {user} =  req
+  await blogServices.deleteBlogFromDB(id, user)
   res.status(httpStatus.OK).json({
     success: true,
     message: 'Blog deleted successfully',
