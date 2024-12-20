@@ -13,6 +13,8 @@ This backend project is designed to serve as the foundation of a blogging platfo
 
 ## Key Features
 **1. User Role**
+</br>
+
 ***User***
    - Can register as user.
    - Can login as user.
@@ -20,14 +22,22 @@ This backend project is designed to serve as the foundation of a blogging platfo
    - Can update their own blog(only when logged in).
    - Can delete their own blog(only when logged in).
    - Can find blogs.
+</br>
+
 ***Admin***
    - Can block a user.
    - Can delete any blog.
+</br>
+
 **2. Authentication**
    - User and Admin must be logged in before perform any operation
+   </br>
+
 **3. Authorization**
    - User can create, update and delete their own blog only.
    - Admin can block any user and delete any blog. But can not update any blog
+   </br>
+   
 **4. Validation**
    - Strong validation for request bodies using Zod
   
